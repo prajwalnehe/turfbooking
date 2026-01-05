@@ -90,7 +90,7 @@ export default function Home() {
             <p className="text-gray-400 text-xs sm:text-sm">
               If you just added a turf, make sure it's approved and active. 
               <Link to="/owner/dashboard" className="text-indigo-600 hover:underline ml-1">
-                Check Owner Dashboard
+                Check Dashboard
               </Link>
             </p>
           </div>

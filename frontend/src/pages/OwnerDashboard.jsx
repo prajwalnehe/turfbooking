@@ -63,7 +63,7 @@ function OwnerDashboardContent() {
     <div className="min-h-screen bg-gray-50 py-4 sm:py-8">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-4 sm:mb-6">
-          <h1 className="text-2xl sm:text-3xl font-bold">Owner Dashboard</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold">Dashboard</h1>
           <Link
             to="/owner/add-turf"
             className="bg-indigo-600 text-white px-4 sm:px-6 py-2 rounded-lg hover:bg-indigo-700 text-sm sm:text-base text-center"

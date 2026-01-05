@@ -74,7 +74,7 @@ function DashboardContent() {
               to="/"
               className="text-indigo-600 hover:text-indigo-700 font-medium text-sm sm:text-base"
             >
-              Browse Turfs
+              All Turfs
             </Link>
           </div>
         ) : (

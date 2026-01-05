@@ -14,7 +14,7 @@ export default function Navbar() {
 
           <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-sm sm:text-base">
             <Link to="/" className="text-gray-700 hover:text-indigo-600 whitespace-nowrap">
-              Browse Turfs
+              All Turfs
             </Link>
 
             {isAuthenticated ? (
@@ -24,7 +24,7 @@ export default function Navbar() {
                     to="/owner/dashboard"
                     className="text-gray-700 hover:text-indigo-600 whitespace-nowrap"
                   >
-                    Owner Dashboard
+                    Dashboard
                   </Link>
                 )}
                 {user.role === 'admin' && (
