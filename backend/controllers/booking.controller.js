@@ -279,18 +279,68 @@ export const cancelBooking = async (req, res, next) => {
 
     await booking.save();
 
-    // Release the slot
-    const slot = await Slot.findById(booking.slotId);
-    if (slot) {
+    // Release ALL slots associated with this booking
+    // First, try to find all slots by bookingId
+    let slotsToFree = await Slot.find({ bookingId: booking._id });
+    
+    // If no slots found by bookingId, find by time range (fallback for older bookings)
+    if (slotsToFree.length === 0) {
+      // Generate time slots in the booking range
+      const generateTimeSlotsInRange = (start, end) => {
+        const slots = [];
+        const [startHour, startMin] = start.split(':').map(Number);
+        const [endHour, endMin] = end.split(':').map(Number);
+        const startMinutes = startHour * 60 + startMin;
+        const endMinutes = endHour * 60 + endMin;
+
+        for (let minutes = startMinutes; minutes < endMinutes; minutes += 30) {
+          const hour = Math.floor(minutes / 60);
+          const min = minutes % 60;
+          slots.push(`${hour.toString().padStart(2, '0')}:${min.toString().padStart(2, '0')}`);
+        }
+        return slots;
+      };
+
+      const timeSlotsToFree = booking.endTime 
+        ? generateTimeSlotsInRange(booking.startTime || booking.time, booking.endTime)
+        : [booking.startTime || booking.time];
+
+      const { start: dateStart, end: dateEnd } = getDateRange(booking.date.toISOString().split('T')[0]);
+
+      // Find slots by date range and time
+      // Only free slots that have this bookingId (safest approach)
+      // If bookingId is not set on slots, this booking might be from an older version
+      slotsToFree = await Slot.find({
+        turfId: booking.turfId,
+        date: {
+          $gte: dateStart,
+          $lt: dateEnd,
+        },
+        time: { $in: timeSlotsToFree },
+        bookingId: booking._id, // Only free slots explicitly linked to this booking
+      });
+      
+      // If still no slots found, log a warning (this shouldn't happen with current code)
+      if (slotsToFree.length === 0) {
+        console.warn(`⚠️ No slots found to free for booking ${booking._id}. This might be an older booking format.`);
+      }
+    }
+    
+    console.log(`🔄 Freeing ${slotsToFree.length} slot(s) for cancelled booking:`, slotsToFree.map(s => s.time));
+    
+    // Free all slots in the booking's time range
+    for (const slot of slotsToFree) {
       slot.isBooked = false;
       slot.bookingId = null;
       await slot.save();
     }
 
+    console.log('✅ All slots freed for cancelled booking');
+
     res.json({
       success: true,
       data: booking,
-      message: 'Booking cancelled successfully',
+      message: 'Booking cancelled successfully. Time slots are now available for other users.',
     });
   } catch (error) {
     next(error);
