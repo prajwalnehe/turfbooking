@@ -72,8 +72,10 @@ FRONTEND_URL=https://your-frontend-url.onrender.com
 ### Frontend Variables
 
 ```
-VITE_API_URL=https://your-backend-url.onrender.com/api
+VITE_BACKEND_URL=https://turfbooking-bmiv.onrender.com
 ```
+
+**Note:** The `/api` path will be automatically appended. If your backend URL already includes `/api`, you can use `VITE_API_URL` instead.
 
 ## 🔗 Getting Your URLs
 

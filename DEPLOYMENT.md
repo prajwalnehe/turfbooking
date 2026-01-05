@@ -79,8 +79,10 @@ This guide will help you deploy the Turf Booking application on Render.
 
 4. **Add Environment Variables:**
    ```
-   VITE_API_URL=https://your-backend-url.onrender.com/api
+   VITE_BACKEND_URL=https://turfbooking-bmiv.onrender.com
    ```
+   
+   **Note:** The `/api` path will be automatically appended. If your backend URL already includes `/api`, use `VITE_API_URL` instead.
 
 5. **Click "Create Web Service"**
 
@@ -125,7 +127,8 @@ If you prefer using the `render.yaml` file:
 
 | Variable | Description | Example |
 |----------|-------------|---------|
-| `VITE_API_URL` | Backend API URL | `https://your-backend.onrender.com/api` |
+| `VITE_BACKEND_URL` | Backend URL (auto-appends /api) | `https://turfbooking-bmiv.onrender.com` |
+| `VITE_API_URL` | Full API URL (alternative) | `https://your-backend.onrender.com/api` |
 
 ## Troubleshooting
 

@@ -40,8 +40,8 @@ services:
     buildCommand: cd frontend && npm install && npm run build
     startCommand: cd frontend && npm start
     envVars:
-      - key: VITE_API_URL
-        sync: false
+      - key: VITE_BACKEND_URL
+        value: https://turfbooking-bmiv.onrender.com
       - key: PORT
         value: 3000
 
